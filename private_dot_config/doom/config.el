@@ -9,11 +9,16 @@
 
 (setq doom-font (font-spec :family "FiraMono Nerd Font Mono"))
 
+;; vterm
+
 (defun see-no-evil ()
   (when (equal major-mode 'vterm-mode)
     (evil-emacs-state)))
 
 (add-hook 'after-change-major-mode-hook 'see-no-evil)
+
+;; TODO: Want to add some extra nu config for emacs?
+(setq vterm-shell "nu")
 
 ;; Org
 (setq org-agenda-files '("~/org/inbox.org"
