@@ -50,6 +50,7 @@
       (write-file filename))
     (find-file filename)))
 
+(use-package! gptel
+ :config
+ (setq! gptel-api-key {{ (bitwardenFields "item" "openai.com").apikey.value | quote }}))
 
-;; local
-(load! "local")
