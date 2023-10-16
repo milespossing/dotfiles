@@ -87,6 +87,7 @@ $env.PATH = ($env.PATH |
   append ($env.HOME | path join '.config/emacs/bin') |
   append ($env.HOME | path join 'bin')
 )
+$env.PATH = ($env.PATH | prepend '/opt/homebrew/bin')
 
 $env.SHELL = "nu"
 
@@ -109,3 +110,4 @@ $env.ASDF_NU_DIR = ($env.HOME | path join '.asdf')
 $env.NU_LIB_DIRS = (
   $env.NU_LIB_DIRS | append ($env.ASDF_NU_DIR)
 )
+
