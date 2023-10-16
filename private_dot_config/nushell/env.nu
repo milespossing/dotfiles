@@ -42,6 +42,8 @@ def create_right_prompt [] {
     ([$last_exit_code, (char space), $time_segment] | str join)
 }
 
+mkdir ($env.HOME | path join '.nushell.d')
+
 # Use nushell functions to define your right and left prompt
 $env.PROMPT_COMMAND = {|| create_left_prompt }
 # $env.PROMPT_COMMAND_RIGHT = {|| create_right_prompt }
@@ -102,12 +104,14 @@ def la [] {
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu
 
-zoxide init nushell --hook prompt | save -f ~/.zoxide.nu
+zoxide init nushell --hook prompt | save -f ~/.nushell.d/zoxide.nu
 $env.OPENAI_API_KEY = {{ (bitwardenFields "item" "openai.com").apikey.value | quote }}
 
 $env.EDITOR = "nvim"
 $env.ASDF_NU_DIR = ($env.HOME | path join '.asdf')
 $env.NU_LIB_DIRS = (
-  $env.NU_LIB_DIRS | append ($env.ASDF_NU_DIR)
+  $env.NU_LIB_DIRS |
+  append ($env.ASDF_NU_DIR) |
+  append ($env.HOME | path join '.nushell.d')
 )
 
