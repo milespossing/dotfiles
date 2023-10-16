@@ -1,1 +1,2 @@
+export NU_CONFIG_DIR="$HOME/.config/nushell"
 . "$HOME/.cargo/env"

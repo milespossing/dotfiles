@@ -78,12 +78,15 @@ $env.NU_PLUGIN_DIRS = [
     # ($nu.default-config-dir | path join 'plugins') # add <nushell-config-dir>/plugins
 ]
 
+$env.PATH = ($env.PATH | split row (char esep))
+
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 $env.PATH = ($env.PATH |
-  split row (char esep) |
-  prepend ($env.HOME + '/.cargo/bin') |
-  prepend ($env.HOME + '/go/bin') |
-  append ($env.HOME + /.config/emacs/bin))
+  prepend ($env.HOME | path join '.cargo/bin') |
+  prepend ($env.HOME | path join 'go/bin') |
+  append ($env.HOME | path join '.config/emacs/bin') |
+  append ($env.HOME | path join 'bin')
+)
 
 $env.SHELL = "nu"
 
@@ -102,3 +105,7 @@ zoxide init nushell --hook prompt | save -f ~/.zoxide.nu
 $env.OPENAI_API_KEY = {{ (bitwardenFields "item" "openai.com").apikey.value | quote }}
 
 $env.EDITOR = "nvim"
+$env.ASDF_NU_DIR = ($env.HOME | path join '.asdf')
+$env.NU_LIB_DIRS = (
+  $env.NU_LIB_DIRS | append ($env.ASDF_NU_DIR)
+)
