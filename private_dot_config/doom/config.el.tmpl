@@ -54,3 +54,14 @@
  :config
  (setq! gptel-api-key {{ (bitwardenFields "item" "openai.com").apikey.value | quote }}))
 
+(setq window-divider-default-right-width 3)
+(setq window-divider-default-bottom-width 3)
+
+{{ if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+(setq
+ browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+ browse-url-generic-args     '("/c" "start")
+ browse-url-browser-function #'browse-url-generic)
+{{   end }}
+{{ end }}
