@@ -774,3 +774,4 @@ source asdf.nu
 alias arst = asdf
 alias ll = ls -l
 alias la = ls -la
+alias cd = z

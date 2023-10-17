@@ -1,0 +1,5 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "linux" }}
+wget "https://github.com/neovim/neovim/releases/download/v0.9.4/nvim-linux64.tar.gz" -O /tmp/nvim.tar.gz
+{{ end }}
