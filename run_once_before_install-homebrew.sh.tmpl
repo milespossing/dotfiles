@@ -11,6 +11,9 @@ brew install bitwarden-cli
 brew install neovim
 {{ end -}}
 
+brew install gcc
+brew install fzf
+
 # Check if you are logged in
 if bw status | grep -q "unauthenticated"; then
   bw login 

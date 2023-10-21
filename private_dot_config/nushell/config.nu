@@ -769,9 +769,11 @@ $env.config = {
 
 use ~/.cache/starship/init.nu
 
-source zoxide.nu
+source ~/.zoxide.nu
 source asdf.nu
 alias arst = asdf
 alias ll = ls -l
 alias la = ls -la
 alias cd = z
+
+use ~/.nushell.d
