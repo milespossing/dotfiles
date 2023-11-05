@@ -17,12 +17,13 @@ sudo pacman -Syy base-devel pkg-config cmake zsh neofetch
 
 {{ if eq .chezmoi.os "linux" -}}
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-# TODO: Need to get the ARM mac path in here
-# {{ else -}} # ...
+{{ else if eq .chezmoi.os "darwin" -}}
+eval "$(/opt/homebrew/bin/brew shellenv)"
 {{ end -}}
 brew install bitwarden-cli
 
 # We like the linux version of neovim, mac is different
+# TODO: Need to get the mac neovim
 {{ if eq .chezmoi.os "linux" -}}
 brew install neovim
 {{ end -}}
