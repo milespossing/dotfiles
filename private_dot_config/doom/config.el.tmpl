@@ -23,7 +23,7 @@
 ;; Org
 (setq org-agenda-files '("~/org/inbox.org"
                          "~/org/gtd.org"
-                         ;; "~/org/ticklet.org"
+                         "~/org/tickler.org"
                          ))
 
 (setq org-capture-templates '(("t" "Todo [inbox]" entry
@@ -33,6 +33,14 @@
                                (file+headline "~/org/tickler.org" "Tickler")
                                "* %i%? \n %U")
                               ))
+
+;; This is not going to work currently because it's being reset later in doom/modules/lang/org/config.el.
+;; I'll want to find a way to override the value in that to the below. For now I'll just resign myself to
+;; manual copies.
+(setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
+                           ("~/org/someday.org" :level . 1)
+                           ;;("~/org/tickler.org" :maxlevel . 2)
+                           ))
 
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
