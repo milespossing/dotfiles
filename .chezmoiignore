@@ -2,3 +2,4 @@
 Library/Application Support/nushell/*.nu
 {{ end }}
 todo.txt
+chezmoi.toml

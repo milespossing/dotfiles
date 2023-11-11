@@ -15,7 +15,7 @@
 [difftool "bc4"]
   
 [diff]
-	tool = bc
+	tool = {{ .difftool | default "vimdiff" }}
 [difftool "bc"]
 	trustExitCode = true
 [merge]

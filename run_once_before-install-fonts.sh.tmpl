@@ -1,13 +1,14 @@
 #!/bin/bash
 
-URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraMono.zip"
 FONT_DIR="$HOME/.local/share/fonts"
 
-wget $URL -O /tmp/fira.zip
-unzip /tmp/fira.zip -d /tmp/fira
+wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraMono.zip" -O /tmp/Mono.zip
+wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraCode.zip" -O /tmp/Code.zip
+unzip /tmp/Mono.zip -d /tmp/fira
+unzip /tmp/Code.zip -d /tmp/fira
 mkdir -p "$FONT_DIR"
 mv /tmp/fira/*.ttf "$FONT_DIR"
-mv /tmp/fira/*.otf "$FONT_DIR"
+# mv /tmp/fira/*.otf "$FONT_DIR"
 
 fc-cache -f -v
 
