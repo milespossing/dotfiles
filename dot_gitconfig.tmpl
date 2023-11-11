@@ -4,7 +4,11 @@
 {{ if eq .chezmoi.os "linux" }}
 {{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 [credential]
+{{ if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+{{   end }}
+{{ end }}
 	useHttpPath = true
 {{   end }}
 {{ end }}
@@ -19,11 +23,19 @@
 [mergetool "bc"]
 	trustExitCode = true
 [credential "https://github.com"]
-	helper = 
-	helper = !/home/linuxbrew/.linuxbrew/Cellar/gh/2.37.0/bin/gh auth git-credential
+  helper = 
+{{ if eq .chezmoi.os "linux" -}}
+  helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+{{ else if eq .chezmoi.os "darwin" -}}
+  helper = !/opt/homebrew/bin/gh auth git-credential
+{{ end -}}
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/home/linuxbrew/.linuxbrew/Cellar/gh/2.37.0/bin/gh auth git-credential
+{{ if eq .chezmoi.os "linux" }}
+	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+{{ else if eq .chezmoi.os "darwin" }}
+	helper = !/opt/homebrew/bin/gh auth git-credential
+{{ end }}
 [pull]
 	rebase = false
 [init]

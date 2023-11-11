@@ -776,4 +776,3 @@ alias ll = ls -l
 alias la = ls -la
 alias cd = z
 
-use ~/.nushell.d
