@@ -3,3 +3,8 @@ Library/Application Support/nushell/*.nu
 {{ end }}
 todo.txt
 chezmoi.toml
+{{ if .useDoom }}
+.config/emacs
+{{ else }}
+.config/doom
+{{ end }}
