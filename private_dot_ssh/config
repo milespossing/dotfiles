@@ -1,0 +1,22 @@
+Host Tower
+  User miles
+  HostName 10.0.3.1
+
+Host TuringDocker.wg
+  User miles:TuringDocker
+
+Host ShannonDocker.wg
+  User miles:ShannonDocker
+
+Host Tower.wg
+  User miles:Tower
+
+Host Nas.wg
+  User miles:Nas
+
+Host *.wg
+  HostName warpgate.possing.tech
+  Port 2222
+
+Host *
+  IdentityFile ~/.ssh/id_rsa
