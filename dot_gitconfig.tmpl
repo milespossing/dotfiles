@@ -15,11 +15,11 @@
 [difftool "bc4"]
   
 [diff]
-	tool = {{ .difftool | default "vimdiff" }}
+	tool = {{ index . "difftool" | default "vimdiff" }}
 [difftool "bc"]
 	trustExitCode = true
 [merge]
-	tool = bc
+	tool = {{ index . "mergetool" | default "vimdiff" }}
 [mergetool "bc"]
 	trustExitCode = true
 [credential "https://github.com"]
