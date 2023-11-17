@@ -104,7 +104,7 @@ Set up leader bindings with [[https://github.com/noctuid/general.el][General]].
 
 #+RESULTS:
 
-*** Fullscreen 
+*** Fullscreen
 
 #+begin_src emacs-lisp
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
@@ -141,14 +141,23 @@ Set up leader bindings with [[https://github.com/noctuid/general.el][General]].
 We'll start by adding line numbers to everything, but perhaps we really only want to run them for specific file types.
 
 #+begin_src emacs-lisp
-  (column-number-mode)
-  (global-display-line-numbers-mode t)
-  (setq display-line-numbers 'relative)
+  (elpaca nil
+    (column-number-mode)
+    (global-display-line-numbers-mode t)
+    (setq display-line-numbers 'relative))
 #+end_src
 
-#+RESULTS:
-: relative
-
+*** Dashboard
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :config
+    (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+    (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+    (dashboard-setup-startup-hook)
+    (setq dashboard-startup-banner 'logo)
+    (setq dashboard-center-content t))
+#+end_src
+**** TODO Add some bookmarks?
 ** Ivy
 
 Ivy + Swiper + Counsel for completion
@@ -167,8 +176,6 @@ Installing counsel, ivy, ivy-rich
     (ivy-rich-mode 1))
 #+end_src
 
-#+RESULTS:
-
 *** TODO ripgrep?
 
 ** Helpful
@@ -181,7 +188,7 @@ Installing counsel, ivy, ivy-rich
 #+end_src
 
 #+RESULTS:
-  
+
 * Editing
 ** Default Tab Width
 #+begin_src emacs-lisp
@@ -288,15 +295,15 @@ Installing counsel, ivy, ivy-rich
 
 #+begin_src emacs-lisp
   (elpaca nil
-  (mp/leader-key-map
-    "w"  '(:ignore t :which-key "window")
-    "wj" '(evil-window-down :which-key "move down")
-    "wh" '(evil-window-left :which-key "move left")
-    "wl" '(evil-window-right :which-key "move right")
-    "wk" '(evil-window-up :which-key "move up")
-    "wd" '(evil-window-delete :which-key "delete")
-    "ws" '(evil-window-split :which-key "split horizontal")
-    "wv" '(evil-window-vsplit :which-key "split vertical")))
+    (mp/leader-key-map
+      "w"  '(:ignore t :which-key "window")
+      "wj" '(evil-window-down :which-key "move down")
+      "wh" '(evil-window-left :which-key "move left")
+      "wl" '(evil-window-right :which-key "move right")
+      "wk" '(evil-window-up :which-key "move up")
+      "wd" '(evil-window-delete :which-key "delete")
+      "ws" '(evil-window-split :which-key "split horizontal")
+      "wv" '(evil-window-vsplit :which-key "split vertical")))
 #+end_src
 
 #+RESULTS:
@@ -305,15 +312,15 @@ Installing counsel, ivy, ivy-rich
 
 #+begin_src emacs-lisp
   (defvar mp/emacs-config-path "~/.config/emacs/configuration.org")
-  (elpaca nil
-    (mp/leader-key-map
-      "h" '(:ignore t :which-key "help")
-      "hf" '(counsel-describe-function :which-key "describe/function")
-      "hv" '(counsel-describe-variable :which-key "describe/variable")
-      "hk" '(helpful-key :which-key "describe/key")
-      "hm" '(describe-mode :which-key "describe/mode")
-      "h." '(:ignore t :which-key "dotfiles")
-      "h.c" '((lambda () (interactive) (find-file mp/emacs-config-path)) :which-key "open configuration")))
+    (elpaca nil
+      (mp/leader-key-map
+        "h" '(:ignore t :which-key "help")
+        "hf" '(counsel-describe-function :which-key "describe/function")
+        "hv" '(counsel-describe-variable :which-key "describe/variable")
+        "hk" '(helpful-key :which-key "describe/key")
+        "hm" '(describe-mode :which-key "describe/mode")
+        "h." '(:ignore t :which-key "dotfiles")
+        "h.c" '((lambda () (interactive) (find-file mp/emacs-config-path)) :which-key "open configuration")))
 #+end_src
 
 #+RESULTS:
@@ -355,22 +362,6 @@ Installing counsel, ivy, ivy-rich
 
 #+RESULTS:
 
-** TODO Jumping
-Need some nice jump motions here
-
-** TODO Searching
-Need some nice search/grep in here
-
-** TODO Tree explorer
-
-#+begin_src emacs-lisp
-  (use-package treemacs)
-  (use-package treemacs-evil
-    :after (evil treemacs))
-#+end_src
-
-*** TODO Key bindings
-
 ** Projects: Projectile
 
 *** TODO Find file :keybinding:
@@ -384,7 +375,7 @@ Need some nice search/grep in here
   (use-package projectile
     :config
     (projectile-mode +1)
-    (setq projectile-project-search-path '("~/src"))
+    (setq projectile-project-search-path '("~/src" "~/scratch"))
     (mp/leader-key-map
       "p" '(:ignore t :which-key "project")
       "pp" '(projectile-switch-project :which-key "switch project")))
@@ -412,9 +403,6 @@ Need some nice search/grep in here
 
 #+RESULTS:
 
-** TODO Workspaces
-Not sure if this is something I actually need, to be honest
-
 ** Folding
 Using Origami for folding
 #+begin_src emacs-lisp
@@ -422,6 +410,7 @@ Using Origami for folding
     :config
     (origami-mode))
 #+end_src
+*** TODO Keybindings
 ** Chezmoi
 I still do everything with chezmoi so I might as well do it here
 #+begin_src emacs-lisp
@@ -429,17 +418,85 @@ I still do everything with chezmoi so I might as well do it here
     :config
     (mp/leader-key-map
       "h.f" '(chezmoi-find :which-key "find")
-      "h.w" '(chezmoi-write :which-key "write")))
+      "h.w" '(chezmoi-write :which-key "write"))
+    (add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
+                                                (add-to-list 'company-backends 'chezmoi-company-backend)
+                                                (delete 'chezmoi-company-backend 'company-backends)))))
 #+end_src
+** Treesitter
+
+Emacs 29+ comes with treesitter installed. I'm going to assume that I'm at 29.1 from now on
+
+I'll still want to configure some grammars though.
+
+#+begin_src emacs-lisp
+(setq treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+#+end_src
+
+
+** asdf
+The development version manager
+#+begin_src emacs-lisp
+  ;; (use-package asdf
+  ;;   :config
+  ;;   (asdf-enable))
+#+end_src
+** TODO Jumping
+Need some nice jump motions here
+
+** TODO Searching
+Need some nice search/grep in here
+
+** TODO Tree explorer
+
+#+begin_src emacs-lisp
+  (use-package treemacs)
+  (use-package treemacs-evil
+    :after (evil treemacs))
+#+end_src
+
+*** TODO Key bindings
+
+** TODO Workspaces
+Not sure if this is something I actually need, to be honest
+
 ** TODO gpt.el
 ** TODO bitwarden
+** TODO hydra
+** EPub Reading
+#+begin_src emacs-lisp
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode)
+    :config
+    (defun my-nov-font-setup ()
+      (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
+                                               :height 1.0))
+    (add-hook 'nov-mode-hook 'my-nov-font-setup))
+#+end_src
 * LSP
 Using lsp-mode for this, several packages besides
+
 ** lsp-mode
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :init
     :hook (
+           (typescript-ts-mode . lsp)
            (rust-mode . lsp)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
@@ -457,7 +514,8 @@ Using lsp-mode for this, several packages besides
 #+begin_src emacs-lisp
   (use-package company
     :config
-    (company-mode))
+    (company-mode)
+    (setq company-tooltip-align-notations 1))
 #+end_src
 ** lsp-treemacs
 #+begin_src emacs-lisp
@@ -468,6 +526,13 @@ Using lsp-mode for this, several packages besides
   (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 #+end_src
 ** TODO dap-mode
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :config
+    ;; Enabling only some features
+    (setq dap-auto-configure-features '(sessions locals controls tooltip)))
+
+#+end_src
 * Major Modes
 ** TODO Org
 *** TODO Tags :keybinding:
@@ -585,6 +650,15 @@ Using lsp-mode for this, several packages besides
     (add-hook 'rust-mode-hook 'cargo-minor-mode))
 #+end_src
 ** TODO Javascript & Typescript
+Seems that javascript is here by default. TS, on the other hand...
+#+begin_src emacs-lisp
+(use-package tide
+  :after (company flycheck)
+  :hook ((typescript-ts-mode . tide-setup)
+         (tsx-ts-mode . tide-setup)
+         (typescript-ts-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+ #+end_src
 ** TODO Purescript
 ** TODO Deno
 ** TODO Chezmoi
@@ -603,4 +677,4 @@ Using lsp-mode for this, several packages besides
 ** TODO Recent files
 ** TODO Autosave
 ** TODO Git Gutter
-
+** TODO Lazy Loading
