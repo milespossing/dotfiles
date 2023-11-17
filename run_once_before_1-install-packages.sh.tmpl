@@ -30,11 +30,14 @@ brew install neovim
 {{ end -}}
 
 # Install Emacs
-{{  if eq .chezmoi.os "linux" }}
-{{    if eq .chezmoi.osRelease.id "ubuntu" }}
+{{ if .useDoom }}
+{{   if eq .chezmoi.os "linux" }}
+{{     if eq .chezmoi.osRelease.id "ubuntu" }}
 brew install emacs
-{{    end }}
-{{  end }}
+{{     end }}
+{{   end }}
+{{ end }}
+
 
 brew install gcc
 brew install fzf

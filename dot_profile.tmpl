@@ -1,8 +1,9 @@
 export NU_CONFIG_DIR="$HOME/.config/nushell"
 . "$HOME/.cargo/env"
 
-{{ if eq .jetbrains true }}
-
+{{- if .jetbrains }}
 # Added by Toolbox App
 export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
-{{ end }}
+{{- end }}
+
+. "$HOME/.asdf/asdf.sh"

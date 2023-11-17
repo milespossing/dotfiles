@@ -209,6 +209,20 @@ Installing counsel, ivy, ivy-rich
      "g c c" 'evilnc-comment-or-uncomment-lines))
 #+end_src
 
+** WSL
+
+   #+begin_src emacs-lisp
+     ;; WSL-specific setup
+     (when (and (eq system-type 'gnu/linux)
+                (getenv "WSLENV"))
+        ;; WSL clipboard
+       (defun copy-selected-text (start end)
+         (interactive "r")
+           (if (use-region-p)
+             (let ((text (buffer-substring-no-properties start end)))
+               (shell-command (concat "echo '" text "' | clip.exe"))))))
+   #+end_src
+
 
 * Keybinding
 
@@ -418,10 +432,9 @@ Not sure if this is something I actually need, to be honest
 ** Folding
 Using Origami for folding
 #+begin_src emacs-lisp
-  (use-package origami
-    :config
-    (origami-mode))
+  
 #+end_src
+
 ** Chezmoi
 I still do everything with chezmoi so I might as well do it here
 #+begin_src emacs-lisp
