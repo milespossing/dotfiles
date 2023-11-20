@@ -111,9 +111,6 @@ Set up leader bindings with [[https://github.com/noctuid/general.el][General]].
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
-#+RESULTS:
-: ((fullscreen . maximized) (vertical-scroll-bars) (left-fringe . 10) (right-fringe . 10))
-
 *** Theme
 
 **** Doom Themes
@@ -178,7 +175,7 @@ Installing counsel, ivy, ivy-rich
 
 *** TODO ripgrep?
 
-** Helpful
+** [[https://github.com/Wilfred/helpful][Helpful]]
 #+begin_src emacs-lisp
   (use-package helpful
     :after counsel
@@ -333,6 +330,7 @@ Installing counsel, ivy, ivy-rich
         "hv" '(counsel-describe-variable :which-key "describe/variable")
         "hk" '(helpful-key :which-key "describe/key")
         "hm" '(describe-mode :which-key "describe/mode")
+        "hM" '(info-display-manual :which-key "display manual")
         "h." '(:ignore t :which-key "dotfiles")
         "h.c" '((lambda () (interactive) (find-file mp/emacs-config-path)) :which-key "open configuration")))
 #+end_src
@@ -392,7 +390,9 @@ Installing counsel, ivy, ivy-rich
     (setq projectile-project-search-path '("~/src" "~/scratch"))
     (mp/leader-key-map
       "p" '(:ignore t :which-key "project")
-      "pp" '(projectile-switch-project :which-key "switch project")))
+      "pp" '(projectile-switch-project :which-key "switch project")
+      "SPC" '(projectile-find-file :which-key "find file")
+      "pf" '(projectile-find-file :which-key "find file")))
 #+end_src
 
 #+RESULTS:
@@ -411,6 +411,10 @@ Installing counsel, ivy, ivy-rich
 #+begin_src emacs-lisp
   (use-package magit
     :commands (magit-status magit-get-current-branch)
+    :config
+    (mp/leader-key-map
+      "g" '(:ignore t :which-key "git")
+      "gg" '(magit-status :which-key "status"))
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-execpt-diff-v1))
 #+end_src
@@ -422,11 +426,7 @@ Using Origami for folding
 #+begin_src emacs-lisp
   
 #+end_src
-<<<<<<< HEAD
-
-=======
 *** TODO Keybindings
->>>>>>> 2dd89d8f5481e4dbca7d45105b24a53e47901803
 ** Chezmoi
 I still do everything with chezmoi so I might as well do it here
 #+begin_src emacs-lisp
@@ -465,15 +465,27 @@ I'll still want to configure some grammars though.
 #+end_src
 
 
-** asdf
-The development version manager
-#+begin_src emacs-lisp
-  ;; (use-package asdf
-  ;;   :config
-  ;;   (asdf-enable))
-#+end_src
 ** TODO Jumping
-Need some nice jump motions here
+
+*** [[https://github.com/hlissner/evil-snipe][Evil Snipe]]
+#+begin_src emacs-lisp
+  (use-package evil-snipe
+    :config
+    (evil-snipe-mode +1)
+    (evil-snipe-override-mode +1))
+#+end_src
+
+*** [[https://github.com/abo-abo/avy][Avy]]
+#+begin_src emacs-lisp
+  (use-package avy
+    :config
+    (general-define-key
+      :states '(normal visual motion)
+      "g s SPC" 'avy-goto-char-timer
+      "gl" 'avy-goto-line
+      "gw" 'avy-goto-word-1-below
+      "gW" 'avy-goto-word-1-above))
+#+end_src
 
 ** TODO Searching
 Need some nice search/grep in here
@@ -552,30 +564,30 @@ Using lsp-mode for this, several packages besides
 * Major Modes
 ** TODO Org
 *** TODO Tags :keybinding:
-*** TODO Refile :keybinding:
 *** Keybindings
 
 #+begin_src emacs-lisp
   (elpaca nil
-  (general-define-key
-   :states '(normal visual motion)
-   :keymaps 'org-mode-map
-   :prefix "SPC m"
-   "t" 'org-todo
-   "a" 'org-agenda
-   "c" 'org-capture
-   "l" 'org-insert-link
-   "e" '(:ignore t :which-key "execute")
-   "eb" '(org-babel-execute-src-block :which-key "block")
-   "eB" '(org-babel-execute-buffer :which-key "buffer")
-   "s" '(:ignore t :which-key "subtree")
-   "sl" '(org-demote-subtree :which-key "demote")
-   "sh" '(org-promote-subtree :which-key "promote")
-   "sj" '(org-move-subtree-down :which-key "move down")
-   "sk" '(org-move-subtree-up :which-key "move up")))
+    (mp/leader-key-map
+      "X" 'org-capture)
+    (general-define-key
+      :states '(normal visual motion)
+      :keymaps 'org-mode-map
+      :prefix "SPC m"
+      "t" 'org-todo
+      "a" 'org-agenda
+      "c" 'org-capture
+      "l" 'org-insert-link
+      "e" '(:ignore t :which-key "execute")
+      "eb" '(org-babel-execute-src-block :which-key "block")
+      "eB" '(org-babel-execute-buffer :which-key "buffer")
+      "s" '(:ignore t :which-key "subtree")
+      "sl" '(org-demote-subtree :which-key "demote")
+      "sh" '(org-promote-subtree :which-key "promote")
+      "sj" '(org-move-subtree-down :which-key "move down")
+      "sk" '(org-move-subtree-up :which-key "move up")
+      "sr" '(org-refile :which-key "refile")))
 #+end_src
-
-#+RESULTS:
 
 *** Nice Bullets
 
@@ -599,16 +611,11 @@ Using lsp-mode for this, several packages besides
  '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
 #+end_src
 
-#+RESULTS:
-
 *** Indentation
 
 #+begin_src emacs-lisp
 (setq org-startup-indented t)
 #+end_src
-
-#+RESULTS:
-: t
 
 *** Line Wrap
 
@@ -616,14 +623,11 @@ Using lsp-mode for this, several packages besides
 (add-hook 'org-mode-hook 'visual-line-mode)
 #+end_src
 
-#+RESULTS:
-| org-bullets-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | visual-line-mode | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 *** TODO Subtree jumping
 
 
-*** TODO gtd
-*** TODO auto close blocks
+*** gtd
 ** TODO Org Roam
 ** Markdown
 #+begin_src emacs-lisp
@@ -676,6 +680,9 @@ Seems that javascript is here by default. TS, on the other hand...
          (before-save . tide-format-before-save)))
  #+end_src
 ** TODO Purescript
+#+begin_src emacs-lisp
+  (use-package purescript-mode)
+#+end_src
 ** TODO Deno
 ** TODO Chezmoi
 ** TODO Scala
