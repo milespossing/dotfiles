@@ -494,16 +494,6 @@ Not sure if this is something I actually need, to be honest
 ** TODO gpt.el
 ** TODO bitwarden
 ** TODO hydra
-** EPub Reading
-#+begin_src emacs-lisp
-  (use-package nov
-    :mode ("\\.epub\\'" . nov-mode)
-    :config
-    (defun my-nov-font-setup ()
-      (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
-                                               :height 1.0))
-    (add-hook 'nov-mode-hook 'my-nov-font-setup))
-#+end_src
 * LSP
 Using lsp-mode for this, several packages besides
 
