@@ -410,13 +410,10 @@ Installing counsel, ivy, ivy-rich
 
 #+begin_src emacs-lisp
   (use-package magit
-    :commands (magit-status magit-get-current-branch)
     :config
     (mp/leader-key-map
       "g" '(:ignore t :which-key "git")
-      "gg" '(magit-status :which-key "status"))
-    :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-execpt-diff-v1))
+      "gg" '(magit-status :which-key "status")))
 #+end_src
 
 #+RESULTS:
@@ -624,10 +621,36 @@ Using lsp-mode for this, several packages besides
 #+end_src
 
 
-*** TODO Subtree jumping
-
-
 *** gtd
+**** Agenda Files
+#+begin_src emacs-lisp
+  (setq org-agenda-files '("~/org/inbox.org"
+                           ;;"~/org/tickler.org"
+                           "~/org/gtd.org"))
+#+end_src
+**** Refiling
+#+begin_src emacs-lisp
+  (setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
+                             ("~/org/someday.org" :level . 1)
+                             ;;("~/org/tickler.org" :maxlevel . 2)
+  ))
+#+end_src
+**** Capture Templates
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates '(("t" "Todo [inbox]" entry
+                                 (file+headline "~/org/inbox.org" "Tasks")
+                                 "* TODO %i%?")
+                                ("T" "Tickler" entry
+                                 (file+headline "~/org/tickler.org" "Tickler")
+                                 "* %i%? \n %U")))
+#+end_src
+**** Todo Keywords
+#+begin_src emacs-lisp
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+#+end_src
+
+
 ** TODO Org Roam
 ** Markdown
 #+begin_src emacs-lisp
