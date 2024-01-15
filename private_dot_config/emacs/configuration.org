@@ -94,9 +94,6 @@ Set up leader bindings with [[https://github.com/noctuid/general.el][General]].
 (setq visible-bell t)
 #+end_src
 
-#+RESULTS:
-: t
-
 *** Fonts
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil :font "FiraCode Nerd Font")
@@ -107,8 +104,8 @@ Set up leader bindings with [[https://github.com/noctuid/general.el][General]].
 *** Fullscreen
 
 #+begin_src emacs-lisp
-(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
 *** Theme
@@ -209,8 +206,11 @@ Installing counsel, ivy, ivy-rich
     :after (evil general)
     :config
     (general-define-key
-     :states 'normal
-     "g c c" 'evilnc-comment-or-uncomment-lines))
+      :states 'normal
+      "gcc" 'evilnc-comment-or-uncomment-lines)
+        (general-define-key
+          :states '(visual)
+          "gc" 'evilnc-comment-or-uncomment-lines))
 #+end_src
 
 ** WSL
@@ -227,6 +227,13 @@ Installing counsel, ivy, ivy-rich
                (shell-command (concat "echo '" text "' | clip.exe"))))))
    #+end_src
 
+
+
+** Autosave
+
+#+begin_src emacs-lisp
+(setq auto-save-file-name-transforms `((".*" "~/.emacs-saves/" t)))
+#+end_src
 
 * Keybinding
 
@@ -374,6 +381,14 @@ Installing counsel, ivy, ivy-rich
 
 #+RESULTS:
 
+** TODO Tree explorer
+
+#+begin_src emacs-lisp
+  (use-package treemacs)
+  (use-package treemacs-evil
+    :after (evil treemacs))
+#+end_src
+
 ** Projects: Projectile
 
 *** TODO Find file :keybinding:
@@ -409,7 +424,9 @@ Installing counsel, ivy, ivy-rich
 ** Git: Magit
 
 #+begin_src emacs-lisp
+  (use-package transient)
   (use-package magit
+    :after transient
     :config
     (mp/leader-key-map
       "g" '(:ignore t :which-key "git")
@@ -427,14 +444,14 @@ Using Origami for folding
 ** Chezmoi
 I still do everything with chezmoi so I might as well do it here
 #+begin_src emacs-lisp
-  (use-package chezmoi
-    :config
-    (mp/leader-key-map
-      "h.f" '(chezmoi-find :which-key "find")
-      "h.w" '(chezmoi-write :which-key "write"))
-    (add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
-                                                (add-to-list 'company-backends 'chezmoi-company-backend)
-                                                (delete 'chezmoi-company-backend 'company-backends)))))
+  (use-package chezmoi)
+    ;;:config
+    ;;(mp/leader-key-map
+    ;;  "h.f" '(chezmoi-find :which-key "find")
+    ;;  "h.w" '(chezmoi-write :which-key "write"))
+    ;;(add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
+    ;;                                            (add-to-list 'company-backends 'chezmoi-company-backend)
+    ;;                                            (delete 'chezmoi-company-backend 'company-backends)))))
 #+end_src
 ** Treesitter
 
@@ -487,13 +504,6 @@ I'll still want to configure some grammars though.
 ** TODO Searching
 Need some nice search/grep in here
 
-** TODO Tree explorer
-
-#+begin_src emacs-lisp
-  (use-package treemacs)
-  (use-package treemacs-evil
-    :after (evil treemacs))
-#+end_src
 
 *** TODO Key bindings
 
@@ -615,8 +625,13 @@ Using lsp-mode for this, several packages besides
 **** Agenda Files
 #+begin_src emacs-lisp
   (setq org-agenda-files '("~/org/inbox.org"
+                           "~/org/habit-tracking.org"
                            ;;"~/org/tickler.org"
                            "~/org/gtd.org"))
+  (elpaca nil 
+    (mp/leader-key-map
+      "o" '(:ignore t :which-key "org")
+      "o a" 'org-agenda))
 #+end_src
 **** Refiling
 #+begin_src emacs-lisp
@@ -641,6 +656,24 @@ Using lsp-mode for this, several packages besides
 #+end_src
 
 
+*** Habits
+#+begin_src emacs-lisp
+  (elpaca nil
+    (require 'org-habit)
+    (add-to-list 'org-modules 'org-habit t)
+    (setq org-habit-following-days 3
+          org-habit-preceding-days 14
+          org-habit-graph-column 55
+          org-habit-show-all-today t))
+#+end_src
+
+*** CalDav
+#+begin_src emacs-lisp
+  ;; (use-package org-caldav)
+  ;;   :config
+  ;;   (setq org-caldav-calendars
+  ;;     '((:calendar-id "personal
+#+end_src
 ** TODO Org Roam
 ** Markdown
 #+begin_src emacs-lisp

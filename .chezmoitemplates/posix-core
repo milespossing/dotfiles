@@ -4,7 +4,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 {{ end -}}
 . "$HOME/.cargo/env"
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/bin:$HOME/bin
 . "$HOME/.asdf/asdf.sh"
 
 export EDITOR=nvim

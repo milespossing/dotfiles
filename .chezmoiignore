@@ -3,7 +3,8 @@ Library/Application Support/nushell/*.nu
 {{ end }}
 todo.txt
 chezmoi.toml
-{{ if .useDoom }}
+{{ if index . "useDoom" | default false }}
+run_once_before_install-doom.sh.tmpl
 .config/emacs
 {{ else }}
 .config/doom
