@@ -1,4 +1,4 @@
-export NU_CONFIG_DIR="$HOME/.config/nushell"
+export PATH=$PATH:$HOME/bin
 . "$HOME/.cargo/env"
 
 {{- if .jetbrains }}
@@ -7,3 +7,5 @@ export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
 {{- end }}
 
 . "$HOME/.asdf/asdf.sh"
+
+export PATH=$PATH:~/.local/share/coursier/bin
