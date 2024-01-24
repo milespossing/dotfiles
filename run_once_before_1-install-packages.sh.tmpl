@@ -4,11 +4,11 @@
 {{ 	if eq .chezmoi.osRelease.id "ubuntu" }}
 sudo apt update
 sudo apt upgrade
-sudo apt install -y build-essential pkg-config libssl-dev cmake zsh neofetch xdotool xclip
+sudo apt install -y build-essential pkg-config libssl-dev cmake zsh neofetch xdotool xclip direnv
 {{	end }}
 {{	if eq .chezmoi.osRelease.id "manjaro" }}
 sudo pacman -Syyu
-sudo pacman -Syy base-devel pkg-config cmake zsh neofetch
+sudo pacman -Syy base-devel pkg-config cmake zsh neofetch direnv
 {{	end }}
 {{ end }}
 

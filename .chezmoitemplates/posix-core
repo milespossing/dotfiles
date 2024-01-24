@@ -1,3 +1,4 @@
+. "$HOME/.asdf/asdf.sh"
 {{ if eq .chezmoi.os "linux" -}}
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 {{ else }}
@@ -5,6 +6,5 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 {{ end -}}
 . "$HOME/.cargo/env"
 export PATH=$PATH:/usr/local/bin
-. "$HOME/.asdf/asdf.sh"
 
 export EDITOR=nvim
